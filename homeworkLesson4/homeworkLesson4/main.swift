@@ -19,6 +19,8 @@ import Foundation
 //6. Вывести значения свойств экземпляров в консоль.
 //version1
 
+import Foundation
+
 enum Size {
     case big, small
 }
@@ -28,56 +30,131 @@ enum Color {
 enum EngineStart {
     case started, off
 }
-
-class Car {
+enum Windows {
+    case open, closed
+}
+protocol Car {
+    var brand: String {get}
+    var year: Int {get}
+    var color: Color {get set}
+    var size: Size {get set}
+    var engine: EngineStart {get set}
+    var windows: Windows {get set}
+}
+extension Car {
+ mutating func startCar (engine: EngineStart){
+    self.engine = engine
+}
+mutating func windows (windows: Windows){
+    self.windows = windows
+}
+   
+}
+class AnyCar: Car{
+    
+    var brand: String
+    var year: Int
+    var engine: EngineStart
     var color: Color
     var size: Size
-    var carBrand: String
-    init(color: Color, size: Size, carBrand: String){
-        self.carBrand = carBrand
-        self.color = color
-        self.size = size
-        
-        }
-    func printCar() {
-   print(color, size, carBrand)
-     }
+    var windows: Windows
+   
+    init(year: Int, engine: EngineStart, color: Color, size: Size, brand: String, windows: Windows){
+    self.brand = brand
+    self.color = color
+    self.size = size
     
-}
+    
+    func printCar() {
+  print(color, size, brand)
+ }
 
-class SportCar: Car {
-    var maxSpeed: Int
-    var engineState : EngineStart
-    init(maxSpeed: Int, color: Color, size: Size, carBrand: String, engineState: EngineStart) {
-        self.maxSpeed = maxSpeed
-        self.engineState = engineState
-        super.init(color: color, size: size, carBrand: carBrand)
+    class SportCar: AnyCar, CustomStringConvertible{
+        var description: String {
+        return("you chose \(brand)")
+       
     }
-    func engine() {
-        engineState = .started
-        print("Машина заведена!")
-        
-    }
+
 }
   
-class TrunkCar: Car {
-    var carryingCapacity: Int
-    init(carryingCapacity: Int, color: Color, size: Size, carBrand: String) {
-        self.carryingCapacity = carryingCapacity
-        super.init(color: color, size: size, carBrand: carBrand)
-    }
+class TrunkCar: AnyCar {
+ var carryingCapacity: Int
+ init(carryingCapacity: Int, color: Color, size: Size, brand: String) {
+self.carryingCapacity = carryingCapacity
+    super.init(year: 2018, engine: .started, color: .green, size: .big, brand: "Kamaz", windows: .closed)
+}
 
 }
 
-    
-var car1 = SportCar(maxSpeed: 300, color: .green, size: .small, carBrand: "Ferrari", engineState: .started)
-var car2 = TrunkCar(carryingCapacity: 500, color: .red, size: .big, carBrand: "Kamaz")
+//var ferrari = SportCar(year: 2020, engine: .off, color: .red, size: .small, brand: "Ferrari", windows: .open)
+var Kamaz = TrunkCar(carryingCapacity: 500, color: .red, size: .big, brand: "Kamaz")
 
-car1.printCar()
-print("Максимальная скорость \(car1.maxSpeed) км/час")
-print(car1.engine())
-car2.printCar()
-print("Грузоподъемность \(car2.carryingCapacity) кг")
+
+
+}
+
+
+//enum Size {
+//    case big, small
+//}
+//enum Color {
+//  case  red, green
+//}
+//enum EngineStart {
+//    case started, off
+//}
+
+//class Car {
+//    var color: Color
+  //  var size: Size
+    //var carBrand: String
+    //in/it(color: Color, size: Size, carBrand: String){
+      //  self.carBrand = carBrand
+        //self.color = color
+        //self.size = size
+        
+        //}
+    //func printCar() {
+   //print(color, size, carBrand)
+     //}
+    
+//}
+
+//class SportCar: Car {
+  //  var maxSpeed: Int
+   // var engineState : EngineStart
+   // init(maxSpeed: Int, color: Color, size: Size, carBrand: String, engineState: EngineStart) {
+     //   self.maxSpeed = maxSpeed
+     //   self.engineState = engineState
+       // super.init(color: color, size: size, carBrand: carBrand)
+//    }
+  //  func engine() {
+  //      engineState = .started
+   //     print("Машина заведена!")
+        
+//    }
+//}
+  
+//class TrunkCar: Car {
+ //   var carryingCapacity: Int
+ //   init(carryingCapacity: Int, color: Color, size: Size, carBrand: String) {
+   //     self.carryingCapacity = carryingCapacity
+   //     super.init(color: color, size: size, carBrand: carBrand)
+  //  }
+//
+
+
+//}
+
+    
+//var car1 = SportCar(maxSpeed: 300, color: .green, size: .small, carBrand: "Ferrari", engineState: .started)
+//var car2 = TrunkCar(carryingCapacity: 500, color: .red, size: .big, carBrand: "Kamaz")
+
+//car1.printCar()
+//print("Максимальная скорость \(car1.maxSpeed) км/час")
+//print(car1.engine())
+//car2.printCar()
+//print("Грузоподъемность \(car2.carryingCapacity) кг")
 
 
 
